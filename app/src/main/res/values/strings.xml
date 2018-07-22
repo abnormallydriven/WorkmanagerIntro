@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WorkmanagerIntro</string>
+    <string name="simple_upload_worker">Simple Upload Worker</string>
+    <string name="start_worker">Start Worker</string>
+    <string name="files_waiting_to_upload_message">There are fails waiting to be uploaded...</string>
+    <string name="upload_complete_message">Uploading complete</string>
 </resources>

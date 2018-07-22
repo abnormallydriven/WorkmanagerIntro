@@ -18,6 +18,8 @@ class WorkmanagerIntroApp : DaggerApplication() {
     @Inject
     lateinit var workManager: WorkManager
 
+    private lateinit var appComponent: AppComponent
+
     override fun onCreate() {
         super.onCreate()
 
@@ -41,10 +43,11 @@ class WorkmanagerIntroApp : DaggerApplication() {
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().create(this)
+        appComponent = DaggerAppComponent.builder().create(this) as AppComponent
+        return appComponent
     }
 
     fun injector(): AppComponent {
-        return applicationInjector() as AppComponent
+        return appComponent
     }
 }
