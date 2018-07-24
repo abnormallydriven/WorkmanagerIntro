@@ -32,14 +32,20 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
 
 
+        setupSimpleUploadWorkerViews()
+        setupChainWorkerViews()
+
+    }
+
+    private fun setupSimpleUploadWorkerViews() {
         viewModel.liveFileCount.observe(this, Observer { fileCount ->
 
-            if(!viewModel.isUploading()){
+            if (!viewModel.isUploading()) {
                 file_upload_progress_text_view.text = getString(R.string.files_waiting_to_upload_message)
                 return@Observer
             }
 
-            if(fileCount == viewModel.totalFileCount){
+            if (fileCount == viewModel.totalFileCount) {
                 file_upload_progress_text_view.text = getString(R.string.upload_complete_message)
             } else {
                 file_upload_progress_text_view.text = "Uploading file ${fileCount + 1} of ${viewModel.totalFileCount}..."
@@ -51,7 +57,29 @@ class MainActivity : AppCompatActivity() {
         start_simple_upload_worker.setOnClickListener {
             viewModel.startSimpleUpload()
         }
+    }
 
+
+    private fun setupChainWorkerViews() {
+        viewModel.analysisInProgress.observe(this, Observer { status ->
+            chain_work_progress_bar.progress = status
+
+            if(status == 25){
+                chain_upload_progress_text_view.text = "Running pre calculation work"
+            } else if(status == 50){
+                chain_upload_progress_text_view.text = "Pre calculation completed"
+            } else if(status == 75){
+                chain_upload_progress_text_view.text = "Running complicated calculation"
+            } else if(status ==100){
+                chain_upload_progress_text_view.text = "Analysis completed"
+            } else {
+                chain_upload_progress_text_view.text = "No analysis has been run"
+            }
+        })
+
+        start_worker_chain_button.setOnClickListener{
+            viewModel.startComplicatedAnalysis()
+        }
 
     }
 }
