@@ -54,6 +54,7 @@ class MainActivityViewModel @Inject constructor(private val fakeUploadManager: F
         val stageTwoLiveStatus = workManager.getStatusById(stageTwoWorker.id)
 
         val statusesForUniqueWork = workManager.getStatusesForUniqueWork("Complicated_Analysis_Chain_Work")
+
         statusesForUniqueWork.observeForever(object : Observer<MutableList<WorkStatus>> {
             override fun onChanged(t: MutableList<WorkStatus>) {
                 var stagesCompleted = 0
@@ -89,7 +90,7 @@ class MainActivityViewModel @Inject constructor(private val fakeUploadManager: F
         stageTwoLiveStatus.observeForever(object : Observer<WorkStatus> {
             override fun onChanged(workStatus: WorkStatus) {
                 if (workStatus.state == State.SUCCEEDED) {
-                    val resultString = workStatus.outputData.getString(RESULT_KEY, null)
+                    val resultString = workStatus.outputData.getString(RESULT_KEY)
 
                     //do something with our result
                     if (resultString != null) {
